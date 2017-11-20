@@ -12,7 +12,7 @@
         &nbsp;
         <a href="/phonebook" class="btn btn-warning">Reset</a>
         &nbsp;
-        <a href="/contacts-info" class="btn btn-warning">Add New</a>
+        <a href="/contacts-info" class="btn">Add New</a>
         </form>
         </td>
         <td>

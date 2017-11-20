@@ -12,27 +12,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PhonebookController {
 
-    @Value("${phonebook.api}")
-    private String phonebookApi;
-
     @Autowired
     private ContactsService contactsService;
 
     @RequestMapping(value = "/phonebook", method = RequestMethod.GET)
     public String getPhoneBookContacts(ModelMap modelMap) throws Exception {
-        modelMap.put("phoneBook", contactsService.getAllContacts(phonebookApi));
+        modelMap.put("phoneBook", contactsService.getAllContacts());
         return "phoneBook";
     }
 
     @RequestMapping(value = "/phonebook", method = RequestMethod.GET, params = "sort")
     public String getPhoneBookContacts(@RequestParam String sort, ModelMap modelMap) throws Exception {
-        modelMap.put("phoneBook", contactsService.getSortedContacts(phonebookApi, sort));
+        modelMap.put("phoneBook", contactsService.getSortedContacts(sort));
         return "phoneBook";
     }
 
     @RequestMapping(value = "/phonebook", method = RequestMethod.POST)
     public String getSearchedContacts(@RequestParam String contact, ModelMap modelMap) throws Exception {
-        modelMap.put("phoneBook", contactsService.getSearchContacts(phonebookApi, contact));
+        modelMap.put("phoneBook", contactsService.getSearchContacts(contact));
         return "phoneBook";
     }
 
@@ -50,7 +47,6 @@ public class PhonebookController {
 
     @RequestMapping(value = "/phonebook-delete", method = RequestMethod.GET)
     public String deleteContact(@RequestParam String name, ModelMap modelMap) throws Exception {
-        System.out.println("Inside delete method");
         contactsService.deleteContact(name);
         modelMap.put("phoneBook", contactsService.getAllContacts());
         return "phoneBook";
