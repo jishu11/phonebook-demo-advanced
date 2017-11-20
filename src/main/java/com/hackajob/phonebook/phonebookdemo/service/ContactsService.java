@@ -11,4 +11,10 @@ public interface ContactsService {
     List<Contacts> getSearchContacts(final String uri, final String name) throws  Exception;
 
     List<Contacts> getSortedContacts(final String uri, final String sortOrder) throws Exception;
+
+    boolean addContact(String name, String phoneNumber, String address);
+
+    List<Contacts> getAllContacts();
+
+    void deleteContact(String name);
 }
