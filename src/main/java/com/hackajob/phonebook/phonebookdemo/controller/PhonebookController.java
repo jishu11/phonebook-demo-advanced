@@ -1,5 +1,6 @@
 package com.hackajob.phonebook.phonebookdemo.controller;
 
+import com.hackajob.phonebook.phonebookdemo.model.Contacts;
 import com.hackajob.phonebook.phonebookdemo.service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,9 +34,9 @@ public class PhonebookController {
         return "phoneBook";
     }
 
-    @RequestMapping(value = "/contacts-info", method = RequestMethod.POST, params = "name")
-    public String addContact(@RequestParam String name, @RequestParam String phoneNo, @RequestParam String contactAddress, ModelMap modelMap) throws Exception {
-        boolean isPresent = contactsService.addContact(name, phoneNo, contactAddress);
+    @RequestMapping(value = "/contacts-info", method = RequestMethod.POST)
+    public String addContact(ModelMap modelMap, Contacts contacts) throws Exception {
+        boolean isPresent = contactsService.addContact(contacts.getName(), contacts.getPhoneNumber(), contacts.getAddress());
         if(isPresent) {
             modelMap.put("isPresent", "Already present");
             return "contactsPage";
@@ -53,7 +54,8 @@ public class PhonebookController {
     }
 
     @RequestMapping(value = "/contacts-info", method = RequestMethod.GET)
-    public String addContactInfo() throws Exception {
+    public String addContactInfo(ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("contacts", new Contacts(0, "default name", "default phone", "default address"));
         return "contactsPage";
     }
 }
