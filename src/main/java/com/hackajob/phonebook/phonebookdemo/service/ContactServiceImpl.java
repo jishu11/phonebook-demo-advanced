@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,11 +18,16 @@ public class ContactServiceImpl implements ContactsService {
 
     private static int contactInfoCount = 0;
 
+    private static int count = 0;
+
     static {
         List<Contacts> contactsFromApi = new RestTemplate().getForObject("http://www.mocky.io/v2/581335f71000004204abaf83", ContactsInfo.class).getContactsList();
-        for(int i = 0; i < contactsFromApi.size(); i++) {
-            contacts.add(i, new Contacts(i+1, contactsFromApi.get(i).getName(), contactsFromApi.get(i).getPhoneNumber(), contactsFromApi.get(i).getAddress()));
-        }
+        contacts = contactsFromApi.stream()
+                                  .map(x -> {
+                                       x.setId(++count);
+                                       return x;
+                                   })
+                                  .collect(Collectors.toList());
         contactInfoCount = contactsFromApi.size();
     }
 
