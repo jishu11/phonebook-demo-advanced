@@ -40,25 +40,36 @@ public class ContactServiceImpl implements ContactsService {
     }
 
     @Override
-    public boolean addContact(String name, String phoneNumber, String address) {
+    public boolean addContact(Contacts contact) throws Exception {
         boolean match = contacts.stream()
-                                .anyMatch(x -> x.getName().equalsIgnoreCase(name));
+                                .anyMatch(x -> x.getName().equalsIgnoreCase(contact.getName()));
         if(match) return true;
         else {
-            contacts.add(new Contacts(++contactInfoCount, name, phoneNumber, address));
+            contacts.add(new Contacts(++contactInfoCount, contact.getName(), contact.getPhoneNumber(), contact.getAddress()));
             return false;
         }
     }
 
     @Override
-    public List<Contacts> getAllContacts() {
+    public List<Contacts> getAllContacts() throws Exception {
         contacts.sort((c1, c2) -> c1.getId() - c2.getId());
         return contacts;
     }
 
     @Override
-    public void deleteContact(String name) {
-            Optional<Contacts> contactToBeRemoved = contacts.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst();
-            contacts.remove(contactToBeRemoved.get());
+    public void deleteContact(int id) {
+            contacts.remove(getContact(id).get());
+    }
+
+    @Override
+    public Optional<Contacts> getContact(int id) {
+        return contacts.stream()
+                       .filter(x -> x.getId() == id)
+                       .findFirst();
+    }
+
+    @Override
+    public void updateContact(Contacts contact) {
+        contacts.add(contact);
     }
 }

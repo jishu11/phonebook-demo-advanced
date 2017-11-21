@@ -4,6 +4,7 @@
     <h1> Contact Info </h1> <br/>
     <form:form method="post" commandName="contacts">
     <fieldset class="form-group">
+    <form:hidden path="id"/>
     <form:label path="name">Name</form:label>
     <form:input path="name" type="text" name="name" class="form-control" required="required" />
     <form:label path="phoneNumber">PhoneNumber</form:label>

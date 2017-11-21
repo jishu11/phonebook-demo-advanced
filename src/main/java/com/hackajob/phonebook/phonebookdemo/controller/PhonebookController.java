@@ -35,27 +35,38 @@ public class PhonebookController {
     }
 
     @RequestMapping(value = "/contacts-info", method = RequestMethod.POST)
-    public String addContact(ModelMap modelMap, Contacts contacts) throws Exception {
-        boolean isPresent = contactsService.addContact(contacts.getName(), contacts.getPhoneNumber(), contacts.getAddress());
+    public String addContact(ModelMap modelMap, Contacts contact) throws Exception {
+        boolean isPresent = contactsService.addContact(contact);
         if(isPresent) {
             modelMap.put("isPresent", "Already present");
             return "contactsPage";
         } else {
-            modelMap.put("phoneBook", contactsService.getAllContacts());
-            return "phoneBook";
+            return "redirect:/phonebook";
         }
     }
 
     @RequestMapping(value = "/phonebook-delete", method = RequestMethod.GET)
-    public String deleteContact(@RequestParam String name, ModelMap modelMap) throws Exception {
-        contactsService.deleteContact(name);
-        modelMap.put("phoneBook", contactsService.getAllContacts());
-        return "phoneBook";
+    public String deleteContact(@RequestParam int id, ModelMap modelMap) throws Exception {
+        contactsService.deleteContact(id);
+        return "redirect:/phonebook";
+    }
+
+    @RequestMapping(value = "/phonebook-update", method = RequestMethod.GET)
+    public String updateContact(@RequestParam int id, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("contacts", contactsService.getContact(id));
+        return "contactsPage";
+    }
+
+    @RequestMapping(value = "/phonebook-update", method = RequestMethod.POST)
+    public String updateContact(ModelMap modelMap, Contacts contact) throws Exception {
+        contactsService.deleteContact(contact.getId());
+        contactsService.updateContact(contact);
+        return "redirect:/phonebook";
     }
 
     @RequestMapping(value = "/contacts-info", method = RequestMethod.GET)
     public String addContactInfo(ModelMap modelMap) throws Exception {
-        modelMap.addAttribute("contacts", new Contacts(0, "default name", "default phone", "default address"));
+        modelMap.addAttribute("contacts", new Contacts(0, "", "", ""));
         return "contactsPage";
     }
 }

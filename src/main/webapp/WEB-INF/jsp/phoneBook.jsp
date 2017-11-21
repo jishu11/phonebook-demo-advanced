@@ -42,10 +42,8 @@
         <td>${contactInfo.name}</td>
         <td>${contactInfo.phoneNumber}</td>
         <td>${contactInfo.address}</td>
-        <td><a type="button" class="btn btn-success"
-                                		href="/phonebook-update?name=${contactInfo.name}">Update</a></td>
-        <td><a type="button" class="btn btn-warning"
-                        		href="/phonebook-delete?name=${contactInfo.name}">Delete</a></td>
+        <td><a type="button" class="btn btn-success" href="/phonebook-update?id=${contactInfo.id}">Update</a></td>
+        <td><a type="button" class="btn btn-warning" href="/phonebook-delete?id=${contactInfo.id}">Delete</a></td>
     </tr>
     </c:forEach>
     </tbody>
